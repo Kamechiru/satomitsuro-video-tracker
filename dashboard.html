@@ -1,0 +1,369 @@
+<title>YouTube新着チェッカー</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface-raised: #fbfaf8;
+    --ink: #21262b;
+    --ink-muted: #5b6470;
+    --ink-faint: #8b929b;
+    --border: #dedbd3;
+    --border-strong: #c7c3b8;
+    --accent: #2e5c8a;
+    --accent-soft: #e4ecf3;
+    --new: #d9622b;
+    --new-soft: #fbe7db;
+    --idle: #7d8880;
+    --idle-soft: #eceae4;
+    --shadow: 0 1px 2px rgba(33, 38, 43, 0.06), 0 4px 16px rgba(33, 38, 43, 0.05);
+    --radius: 10px;
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Hiragino Mincho ProN", Georgia, serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, "Courier New", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171a;
+      --surface: #1b1f23;
+      --surface-raised: #21262b;
+      --ink: #e8e6e1;
+      --ink-muted: #9aa2a9;
+      --ink-faint: #6b7278;
+      --border: #2c3237;
+      --border-strong: #3a4046;
+      --accent: #7fb0e0;
+      --accent-soft: #223140;
+      --new: #f0904f;
+      --new-soft: #3a2618;
+      --idle: #7c8680;
+      --idle-soft: #23282a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14171a;
+    --surface: #1b1f23;
+    --surface-raised: #21262b;
+    --ink: #e8e6e1;
+    --ink-muted: #9aa2a9;
+    --ink-faint: #6b7278;
+    --border: #2c3237;
+    --border-strong: #3a4046;
+    --accent: #7fb0e0;
+    --accent-soft: #223140;
+    --new: #f0904f;
+    --new-soft: #3a2618;
+    --idle: #7c8680;
+    --idle-soft: #23282a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface-raised: #fbfaf8;
+    --ink: #21262b;
+    --ink-muted: #5b6470;
+    --ink-faint: #8b929b;
+    --border: #dedbd3;
+    --border-strong: #c7c3b8;
+    --accent: #2e5c8a;
+    --accent-soft: #e4ecf3;
+    --new: #d9622b;
+    --new-soft: #fbe7db;
+    --idle: #7d8880;
+    --idle-soft: #eceae4;
+    --shadow: 0 1px 2px rgba(33, 38, 43, 0.06), 0 4px 16px rgba(33, 38, 43, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
+  }
+
+  header.top {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--ink-muted);
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0 28px;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .summary-card .num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .summary-card.new .num { color: var(--new); }
+  .summary-card .label {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .updated-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    margin-bottom: 18px;
+  }
+
+  .updated-line .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--idle);
+    flex: none;
+  }
+  .updated-line .dot.live { background: var(--new); }
+
+  ul.channels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  li.channel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 14px;
+    align-items: start;
+    transition: border-color 0.15s ease;
+  }
+
+  li.channel.is-new {
+    border-color: color-mix(in srgb, var(--new) 45%, var(--border));
+  }
+
+  .chip {
+    grid-row: 1 / 3;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: var(--idle-soft);
+    color: var(--idle);
+  }
+  .chip.is-new {
+    background: var(--new-soft);
+    color: var(--new);
+    font-weight: 600;
+  }
+
+  .channel-name {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+
+  .video-title {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .video-title:hover { color: var(--accent); text-decoration: underline; }
+  li.channel.is-new .video-title { color: var(--ink); }
+
+  .meta {
+    grid-column: 2;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .meta .fail { color: var(--new); }
+
+  footer {
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+  footer a { color: var(--ink-muted); }
+
+  @media (max-width: 480px) {
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .summary-card:last-child { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">YouTube Watch Status</div>
+    <h1>新着チェッカー</h1>
+    <div class="subtitle">登録した10チャンネルの新着動画を毎朝自動チェック</div>
+  </header>
+
+  <div class="summary-row">
+    <div class="summary-card new">
+      <div class="num" id="sumNew">–</div>
+      <div class="label">新着あり</div>
+    </div>
+    <div class="summary-card">
+      <div class="num" id="sumIdle">–</div>
+      <div class="label">変化なし</div>
+    </div>
+    <div class="summary-card">
+      <div class="num" id="sumTotal">–</div>
+      <div class="label">監視チャンネル数</div>
+    </div>
+  </div>
+
+  <div class="updated-line">
+    <span class="dot" id="updatedDot"></span>
+    <span id="updatedText">読み込み中…</span>
+  </div>
+
+  <ul class="channels" id="channelList"></ul>
+
+  <footer>
+    毎日9:00(JST)にルーティンが自動更新 · <a href="https://claude.ai/code/routines/trig_01L9bqGQ56HdKFg3Gc33toec">実行ログを見る</a>
+  </footer>
+</div>
+
+<script>
+  // CHANNELS_DATA: replaced wholesale by the daily routine after each check.
+  // Keep this array literal as the single source of truth for the page.
+  const CHANNELS_DATA = {
+    checkedAt: "2026-08-04T05:00:00+00:00",
+    channels: [
+      { name: "さとうみつろう", isNew: false, videoTitle: "これは、ヤバい本が出た！", videoUrl: "https://www.youtube.com/watch?v=e5x6nL5UK8U", published: "2026-07-28T12:05:49+00:00" },
+      { name: "トーマスガジェマガ", isNew: false, videoTitle: "【モトブログ】若者ではない。しかしおっさんでもない。という自認【アラフォー】", videoUrl: "https://www.youtube.com/watch?v=Arkj2y0DN74", published: "2026-07-21T05:00:00+00:00" },
+      { name: "ひすいこたろうの名言セラピー", isNew: false, videoTitle: "奇跡はあっさり起きる！引き寄せマスターの秘密", videoUrl: "https://www.youtube.com/watch?v=9ijpJjTzzZk", published: "2026-07-21T05:00:00+00:00" },
+      { name: "崔の店長日誌。", isNew: false, videoTitle: "【書けば叶う！】書くタイミングが重要です！〜1週間後の自分への手紙で夢が叶う理由！〜/ 100日マラソン続〜1941日〜", videoUrl: "https://www.youtube.com/watch?v=XTBXG0AeYPQ", published: "2026-08-03T20:00:00+00:00" },
+      { name: "UP&UP", isNew: false, videoTitle: "【※閲覧注意】信じ切るだけで現実が激変！結果を出し続ける人が無意識に選んでいる「最強の環境」と勘違いの力", videoUrl: "https://www.youtube.com/watch?v=omNTZOabQzQ", published: "2026-08-01T05:00:00+00:00" },
+      { name: "中野優作 / CAR and LIFE.", isNew: false, videoTitle: "【黒い車は本当に暑い？】ボディカラー12色を炎天下で実測して驚きの結果に...！車内温度とシートの体感差まで徹底比較", videoUrl: "https://www.youtube.com/watch?v=mh5lZuofGtA", published: "2026-08-03T05:00:00+00:00" },
+      { name: "サムの本解説ch", isNew: false, videoTitle: "【要約】人生がなぜかうまくいく人の考え方　「思い」が現実になる", videoUrl: "https://www.youtube.com/watch?v=KPqDb8TYzP0", published: "2026-08-02T05:00:00+00:00" },
+      { name: "サラタメさん", isNew: false, videoTitle: "【結論出た。完全に】誰でも”言語化”できちゃう「究極3ステップ」", videoUrl: "https://www.youtube.com/watch?v=cltFAL6veDc", published: "2026-06-05T05:00:00+00:00" },
+      { name: "宋世羅の羅針盤ちゃんねる", isNew: false, videoTitle: "言われたことを聞くべき時、聞くべきではない時。", videoUrl: "https://www.youtube.com/watch?v=YwRYdFJFp9U", published: "2026-08-03T12:00:00+00:00" },
+      { name: "BUDDICAの中野クン", isNew: false, videoTitle: "【一流は愛嬌で勝つ】中野優作がベンチマークする最強の商人の仕事術", videoUrl: "https://www.youtube.com/watch?v=bD9PkZlI10M", published: "2026-08-02T05:00:00+00:00" }
+    ]
+  };
+
+  function relTime(iso) {
+    const then = new Date(iso).getTime();
+    const now = Date.now();
+    const diffMs = now - then;
+    const min = Math.floor(diffMs / 60000);
+    if (min < 60) return `${Math.max(min, 0)}分前`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `${hr}時間前`;
+    const day = Math.floor(hr / 24);
+    if (day < 30) return `${day}日前`;
+    const mon = Math.floor(day / 30);
+    return `${mon}ヶ月前`;
+  }
+
+  function render(data) {
+    const list = document.getElementById("channelList");
+    list.innerHTML = "";
+    let newCount = 0;
+
+    data.channels.forEach((ch) => {
+      if (ch.isNew) newCount++;
+      const li = document.createElement("li");
+      li.className = "channel" + (ch.isNew ? " is-new" : "");
+
+      const chip = document.createElement("span");
+      chip.className = "chip" + (ch.isNew ? " is-new" : "");
+      chip.textContent = ch.failed ? "取得失敗" : (ch.isNew ? "新着あり" : "変化なし");
+
+      const name = document.createElement("div");
+      name.className = "channel-name";
+      name.textContent = ch.name;
+
+      const video = document.createElement("a");
+      video.className = "video-title";
+      video.href = ch.videoUrl;
+      video.target = "_blank";
+      video.rel = "noopener noreferrer";
+      video.textContent = ch.videoTitle;
+
+      const meta = document.createElement("div");
+      meta.className = "meta" + (ch.failed ? " fail" : "");
+      meta.textContent = ch.failed ? "前回チェック失敗" : `公開: ${relTime(ch.published)}`;
+
+      li.append(chip, name, video, meta);
+      list.appendChild(li);
+    });
+
+    document.getElementById("sumNew").textContent = newCount;
+    document.getElementById("sumIdle").textContent = data.channels.length - newCount;
+    document.getElementById("sumTotal").textContent = data.channels.length;
+
+    const dot = document.getElementById("updatedDot");
+    const text = document.getElementById("updatedText");
+    dot.classList.toggle("live", newCount > 0);
+    text.textContent = `最終チェック: ${relTime(data.checkedAt)}`;
+  }
+
+  render(CHANNELS_DATA);
+</script>
