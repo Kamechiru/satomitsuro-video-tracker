@@ -10,7 +10,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=e5x6nL5UK8U",
       "last_video_published": "2026-07-28T12:05:49+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "トーマスガジェマガ",
@@ -21,7 +21,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=Arkj2y0DN74",
       "last_video_published": "2026-07-21T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "ひすいこたろうの名言セラピー",
@@ -32,7 +32,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=9ijpJjTzzZk",
       "last_video_published": "2026-07-21T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "崔の店長日誌。",
@@ -43,7 +43,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=XTBXG0AeYPQ",
       "last_video_published": "2026-08-03T20:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "UP&UP",
@@ -54,7 +54,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=omNTZOabQzQ",
       "last_video_published": "2026-08-01T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "中野優作 / CAR and LIFE.（BUDDICA）",
@@ -65,7 +65,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=mh5lZuofGtA",
       "last_video_published": "2026-08-03T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "サムの本解説ch",
@@ -76,7 +76,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=KPqDb8TYzP0",
       "last_video_published": "2026-08-02T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "サラタメさん",
@@ -87,7 +87,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=cltFAL6veDc",
       "last_video_published": "2026-06-05T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "宋世羅の羅針盤ちゃんねる（そんせらの羅針盤チャンネル）",
@@ -98,7 +98,7 @@
       "last_video_url": "https://www.youtube.com/watch?v=YwRYdFJFp9U",
       "last_video_published": "2026-08-03T12:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     },
     {
       "name": "BUDDICAの中野クン",
@@ -109,8 +109,8 @@
       "last_video_url": "https://www.youtube.com/watch?v=bD9PkZlI10M",
       "last_video_published": "2026-08-02T05:00:00+00:00",
       "new_in_last_check": false,
-      "check_failed": false
+      "check_failed": true
     }
   ],
-  "last_checked_at": "2026-08-04T05:00:00+00:00"
+  "last_checked_at": "2026-08-04T06:14:54+00:00"
 }
