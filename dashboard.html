@@ -241,6 +241,34 @@
 
   .meta .fail { color: var(--new); }
 
+  .summary-toggle {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .summary-toggle:hover { text-decoration: underline; }
+
+  .summary-body {
+    grid-column: 2;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-strong);
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+    display: none;
+  }
+  .summary-body.open { display: block; }
+
   footer {
     margin-top: 32px;
     font-size: 12px;
@@ -295,16 +323,16 @@
   const CHANNELS_DATA = {
     checkedAt: "2026-08-05T09:48:43Z",
     channels: [
-      { name: "さとうみつろう", isNew: true, videoTitle: "中国AIとアメリカAIが『スカイネット連合』を立ち上げ？！", videoUrl: "https://www.youtube.com/watch?v=nZvcNC7rbKo", published: "2026-08-05T09:36:07+00:00", failed: false },
-      { name: "トーマスガジェマガ", isNew: false, videoTitle: "【モトブログ】若者ではない。しかしおっさんでもない。という自認【アラフォー】", videoUrl: "https://www.youtube.com/watch?v=Arkj2y0DN74", published: "2026-07-21T05:00:00+00:00", failed: false },
-      { name: "ひすいこたろうの名言セラピー", isNew: true, videoTitle: "たった1分で、心が元気になる言霊", videoUrl: "https://www.youtube.com/watch?v=FUrsoKVf-58", published: "2026-08-04T12:00:16+00:00", failed: false },
-      { name: "崔の店長日誌。", isNew: true, videoTitle: "【暦】要注意期間『八専』が来る！〜心と身体の声〜/ 100日マラソン続〜1942日〜", videoUrl: "https://www.youtube.com/watch?v=qjZrAjCJ9I8", published: "2026-08-04T20:00:20+00:00", failed: false },
-      { name: "UP&UP", isNew: false, videoTitle: "【※閲覧注意】信じ切るだけで現実が激変！結果を出し続ける人が無意識に選んでいる「最強の環境」と勘違いの力", videoUrl: "https://www.youtube.com/watch?v=omNTZOabQzQ", published: "2026-08-01T05:00:00+00:00", failed: false },
-      { name: "中野優作 / CAR and LIFE.", isNew: false, videoTitle: "【8月8・9日開催】大阪堺支社がついにオープン！親子で楽しめるイベント盛りだくさんのオープンイベントを開催します！", videoUrl: "https://www.youtube.com/watch?v=AhN7pNPQER4", published: "2026-08-04T10:00:24+00:00", failed: false },
-      { name: "サムの本解説ch", isNew: false, videoTitle: "【要約】人生がなぜかうまくいく人の考え方　「思い」が現実になる", videoUrl: "https://www.youtube.com/watch?v=KPqDb8TYzP0", published: "2026-08-02T05:00:00+00:00", failed: false },
-      { name: "サラタメさん", isNew: false, videoTitle: "【結論出た。完全に】誰でも”言語化”できちゃう「究極3ステップ」", videoUrl: "https://www.youtube.com/watch?v=cltFAL6veDc", published: "2026-06-05T05:00:00+00:00", failed: false },
-      { name: "宋世羅の羅針盤ちゃんねる", isNew: false, videoTitle: "言われたことを聞くべき時、聞くべきではない時。", videoUrl: "https://www.youtube.com/watch?v=YwRYdFJFp9U", published: "2026-08-03T12:00:00+00:00", failed: false },
-      { name: "BUDDICAの中野クン", isNew: false, videoTitle: "【一流は愛嬌で勝つ】中野優作がベンチマークする最強の商人の仕事術", videoUrl: "https://www.youtube.com/watch?v=bD9PkZlI10M", published: "2026-08-02T05:00:00+00:00", failed: false }
+      {"name": "さとうみつろう", "isNew": true, "videoTitle": "中国AIとアメリカAIが『スカイネット連合』を立ち上げ？！", "videoUrl": "https://www.youtube.com/watch?v=nZvcNC7rbKo", "published": "2026-08-05T09:36:07+00:00", "failed": false, "summary": "※この動画は字幕（文字起こし）が無効化されており、内容を取得できませんでした。以下はタイトル情報のみに基づく簡易的な要約です。\n\nタイトルから判断すると、中国とアメリカのAI同士が「スカイネット連合」（映画『ターミネーター』に登場する人工知能ネットワークになぞらえた表現）を立ち上げた、という趣旨の話題を扱った動画と推測されます。さとうみつろう氏はAIの進展や社会構造の変化を独自の視点で語ることが多いチャンネルのため、AI技術の急速な発展とそれに伴う社会・国際情勢への影響について、氏の哲学的・スピリチュアルな視点から考察する内容である可能性が高いですが、字幕が取得できなかったため、具体的な発言内容・エピソード・数字等は不明です。正確な内容を知りたい場合は動画本編をご確認ください。"},
+      {"name": "トーマスガジェマガ", "isNew": false, "videoTitle": "【モトブログ】若者ではない。しかしおっさんでもない。という自認【アラフォー】", "videoUrl": "https://www.youtube.com/watch?v=Arkj2y0DN74", "published": "2026-07-21T05:00:00+00:00", "failed": false, "summary": null},
+      {"name": "ひすいこたろうの名言セラピー", "isNew": true, "videoTitle": "たった1分で、心が元気になる言霊", "videoUrl": "https://www.youtube.com/watch?v=FUrsoKVf-58", "published": "2026-08-04T12:00:16+00:00", "failed": false, "summary": "この動画は、何があっても「進め、進め」と自分を励まし続ける、力強い言霊（詩）を音楽とともに朗読する1分間のショート動画です。\n\n【冒頭】\n「1分で心が元気になる美しい言葉」として動画が始まり、「自分たちは後悔なんてしていられない。したいことが多すぎる。進め、進め。」という一節で、後悔している暇はなく前進あるのみだという基調が示されます。\n\n【具体的な逆境の例と、それでも進めという繰り返し】\n続けて、日常に起こりうる様々な逆境が例として次々と挙げられ、その都度「進め、進め」というフレーズで締めくくられます。\n・「麦ができ損なった。それもいいだろう。後のためになる。進め、進め。」\n・「家が焼けた。それもいいだろう。新しい家が立つ。進め、進め。」\n・「人が抜けました。仕方がない。さらにいい人が入るだろう。進め、進め。」\n・「何をしたらいいのかわからない。しなければならないことを片っ端から忠実にしろ。進め、進め。」\nこのように、失敗・喪失・離別・迷いといった様々なマイナスの出来事に対して、「それもいいだろう」「仕方がない」といったん受け入れた上で、必ずそこに次への希望（「後のためになる」「新しい家が立つ」「さらにいい人が入る」）を見出し、前進を促す構成が繰り返されます。\n\n【迷いへの問いかけと確信】\n「こんな歩き方でいいのか？」という自問に対して「いいのだ。一歩でも一寸でも信じる道を進め。進め。」と即座に自答し、さらに「神がよしと見た道は間違いのない道だ。進め、進め。」と、自分の信じる道を歩むことへの確信を強調します。\n\n【締めくくり・ねぎらいの言葉】\n最後は語り口が変わり、「というわけで今日も頑張ったね。お疲れ様でした。2歩進んで3歩下がる。そんな君も好き。進め、進め。」と、視聴者自身の一日の頑張りをねぎらい、たとえ後退しているように見える日があってもそんな自分を肯定する言葉で締めくくられます。\n\n【まとめ】\n失敗や喪失、迷いといった人生の様々な逆境に直面しても、それを一旦受け入れた上で必ずそこに希望を見出し、「進め、進め」の合言葉とともに自分を励まし続けることを説いた詩の朗読動画です。前進が遅く後退しているように見える日があってもよい、頑張っている自分をそのまま肯定してあげようという、視聴者への温かいねぎらいのメッセージで締めくくられています。"},
+      {"name": "崔の店長日誌。", "isNew": true, "videoTitle": "【暦】要注意期間『八専』が来る！〜心と身体の声〜/ 100日マラソン続〜1942日〜", "videoUrl": "https://www.youtube.com/watch?v=qjZrAjCJ9I8", "published": "2026-08-04T20:00:20+00:00", "failed": false, "summary": "この動画は、暦（干支）の観点から、8月6日〜8月17日にやってくる要注意期間「八専」について、その意味と過ごし方の注意点を語る内容です。\n\n【冒頭の挨拶と日付確認】\n「皆さんおはようございます。最平です。」という挨拶から始まり、今日が8月5日水曜日であることを確認します。\n\n【視聴者からの質問への回答：オンラインサロンについて】\n本題に入る前に、この期間に多く寄せられていた質問に答えます。8月18日から本人初となるオンラインサロンをスタートする予定だが、詳細はまだ決まっておらず、決まり次第YouTubeの概要欄で告知するとのこと。また、「オンラインサロンを始めたら毎日のYouTube更新をやめるのでは」と心配する声があったことに対し、「そんなことは絶対にありません」と明言。YouTubeという場を通じて視聴者から多くの力をもらってきたこと、毎日続けられているのはトイレ掃除・YouTube更新・家族への愛くらいだと語り、この場所が自分にとって重要であることを強調します。サロンに入るにはお金も時間もかかるため、無理に入る必要はなく、興味がある程度なら検討する程度でよいとも付け加えます。\n\n【夏の土用が明日で終わることの説明】\n8月1日の配信で説明した8月の暦の流れを振り返りつつ、「夏の土用」と呼ばれる季節の変わり目の期間が明日8月6日で終わり、8月7日からは暦の上で「立秋」となり秋が始まると説明します。土用の期間中は自分自身も体調を崩して寝込み、妻も原因不明の熱を出したものの復活したというエピソードを紹介。\n\n【土用明けに体調を崩す人が多いことへの警鐘】\n土用の期間が終わった「後」から体調を崩す人が多いと指摘し、その理由として「気が張っていたのが緩む」ことを挙げます。例として、現場仕事の人が仕事中は元気でも帰宅後に発熱し、病院で熱中症と診断されるケースを紹介。同様に、夏の土用が明けた後に急に体調を崩す人が多いこと、また春の土用（4月中旬〜5月上旬）明けに「五月病」が出やすいことも併せて説明します。\n\n【心と体の声を聞くこと・食事の注意】\n夏の土用が終わった後は「心と体の調子のメンテナンス期間」に入ると位置づけ、心と体の声をよく聞くこと、温かいものを食べる・体を冷やすものを控える・よく噛んで食べる・消化にいいものを食べることを勧めます。自身の経験として、体調を崩すまで「下腹部が重い」「些細なことでイライラする」「けだるい」「睡眠の質が悪い」といった小さなサインに気づけていなかったと振り返り、これらのサインを見逃さないことの重要性を語ります。師匠の言葉として、この時期に燃え尽きるとその年だけでなく来年にまで影響が及ぶと注意を促します。\n\n【「八専」期間の解説：十干十二支とエネルギーの偏り】\n土用が明けると、8月6日〜8月17日は「八専」という期間に入ると説明。十干（木火土金水の5行）と十二支が組み合わさって60種類の周期を作り、60日・60ヶ月・60年のサイクルでエネルギーの流れを作っているとし、八専の期間はこのエネルギーに「偏り」が生じる期間だと解説します。土用の期間中は「土」のエネルギーが乱れていたのに対し、八専の期間は「大気」の気（気温・気圧）が乱れやすいとします。\n\n【八専期間中の天候の乱れと注意点】\n八専の期間は旅行や引っ越しを控えるようによく言われるとした上で、その理由は行為自体が悪いのではなく天候が極端に乱れやすいためだと説明。具体例として「8月6日が晴れればその後は雨が多く、逆に8月6日に崩れれば晴れが多くなる」という言い伝えを紹介し、単に雨が降るというより豪雨や猛暑など極端な形で現れやすいと補足します。福岡の天気予報を確認しつつ、「これは本当にバカにならない」と実感を語ります。\n\n【八専期間中に大きな決断を避けるべき理由】\n結婚や大きな契約・買い物にも注意が必要だとされる理由について、「半分は迷信」としつつも、この期間は感情がプラスにもマイナスにも極端に振れやすく、小さな怒りが大きな怒りに、小さな喜びが大きな喜びに変わりやすいため、感情的な判断で後悔しやすいと説明。すでに以前から決めていた契約・結婚などは問題ないが、この期間に突然思い立って大きな決断をするのは要注意とし、落ち着いて周囲に相談した上で判断すれば大きな問題にはならないとアドバイスします。\n\n【言葉が返ってくるという言い伝え】\nこの期間は自分が発した言葉が「売買（バイバイ）」のように自分に返ってきやすいという説にも触れ、愚痴・文句・不平・不満を言えばそれが自分に返ってくるし、逆に感謝や褒め言葉を発すればそれもまた自分に返ってくるとし、この性質を逆手にとって言葉や感情を上手に使えばプラスにも働くと述べます。\n\n【締めのエール】\n最後は「ちゃんと落ち着いてやっていけば大丈夫」と視聴者を励まし、いつも通り「行きます、行きます、せーの、よっしゃ！」というガッツポーズの掛け声とともに視聴者を元気よく送り出して締めくくります。\n\n【まとめ】\n明日8月6日で「夏の土用」が明け、8月6日〜8月17日は十干十二支のエネルギーが偏る「八専」という要注意期間に入るため、体調（特に土用明けの気の緩みによる体調不良）と心の状態（感情が極端に振れやすく、後悔する決断をしやすい）の両面で、自分の心身の小さなサインをよく聞き、落ち着いて過ごすことが重要だというのがこの動画全体を貫くメッセージです。"},
+      {"name": "UP&UP", "isNew": false, "videoTitle": "【※閲覧注意】信じ切るだけで現実が激変！結果を出し続ける人が無意識に選んでいる「最強の環境」と勘違いの力", "videoUrl": "https://www.youtube.com/watch?v=omNTZOabQzQ", "published": "2026-08-01T05:00:00+00:00", "failed": false, "summary": null},
+      {"name": "中野優作 / CAR and LIFE.（BUDDICA）", "isNew": false, "videoTitle": "【8月8・9日開催】大阪堺支社がついにオープン！親子で楽しめるイベント盛りだくさんのオープンイベントを開催します！", "videoUrl": "https://www.youtube.com/watch?v=AhN7pNPQER4", "published": "2026-08-04T10:00:24+00:00", "failed": false, "summary": null},
+      {"name": "サムの本解説ch", "isNew": false, "videoTitle": "【要約】人生がなぜかうまくいく人の考え方　「思い」が現実になる", "videoUrl": "https://www.youtube.com/watch?v=KPqDb8TYzP0", "published": "2026-08-02T05:00:00+00:00", "failed": false, "summary": null},
+      {"name": "サラタメさん", "isNew": false, "videoTitle": "【結論出た。完全に】誰でも”言語化”できちゃう「究極3ステップ」", "videoUrl": "https://www.youtube.com/watch?v=cltFAL6veDc", "published": "2026-06-05T05:00:00+00:00", "failed": false, "summary": null},
+      {"name": "宋世羅の羅針盤ちゃんねる（そんせらの羅針盤チャンネル）", "isNew": false, "videoTitle": "言われたことを聞くべき時、聞くべきではない時。", "videoUrl": "https://www.youtube.com/watch?v=YwRYdFJFp9U", "published": "2026-08-03T12:00:00+00:00", "failed": false, "summary": null},
+      {"name": "BUDDICAの中野クン", "isNew": false, "videoTitle": "【一流は愛嬌で勝つ】中野優作がベンチマークする最強の商人の仕事術", "videoUrl": "https://www.youtube.com/watch?v=bD9PkZlI10M", "published": "2026-08-02T05:00:00+00:00", "failed": false, "summary": null},
     ]
   };
 
@@ -352,6 +380,25 @@
       meta.textContent = ch.failed ? "前回チェック失敗" : `公開: ${relTime(ch.published)}`;
 
       li.append(chip, name, video, meta);
+
+      if (ch.summary) {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "summary-toggle";
+        toggle.textContent = "▸ 詳細な要約を読む";
+
+        const body = document.createElement("div");
+        body.className = "summary-body";
+        body.textContent = ch.summary;
+
+        toggle.addEventListener("click", () => {
+          const open = body.classList.toggle("open");
+          toggle.textContent = open ? "▾ 要約をたたむ" : "▸ 詳細な要約を読む";
+        });
+
+        li.append(toggle, body);
+      }
+
       list.appendChild(li);
     });
 
