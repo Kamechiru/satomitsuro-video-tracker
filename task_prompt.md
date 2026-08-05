@@ -23,10 +23,12 @@
         - 冒頭に「この動画は何の話か(ひとことで)」を1〜2文で
         - その後、**動画の実際の話の流れ(構成・段落・話題の区切り)に沿って、話が展開する順番通りに区切り、区切りごとに見出しをつけて詳細にまとめる**。話者が独自にカテゴリ分けしたり時系列を並べ替えたりせず、実際にその順番で話されていた通りの構成を保つこと。各区切りには、具体的な発言内容・エピソード・数字・比喩・引用などをできるだけ盛り込み、読むだけでその部分で何が語られたか具体的にわかるようにする。区切りの数は動画の内容量に応じて自然に決めてよい(短い動画なら少なく、長い配信なら多くなってよい)。
         - 最後に「まとめ」として、動画全体を通して一貫しているメッセージや結論を1段落でまとめる。
-      - state.json のそのチャンネルの項目を更新: last_video_id, last_video_title, last_video_url, last_video_published, new_in_last_check=true, check_failed=false。
+      - state.json のそのチャンネルの項目を更新: last_video_id, last_video_title, last_video_url, last_video_published, new_in_last_check=true, check_failed=false, **last_summary=(今作成した要約テキスト全文をそのまま文字列として)**。
       - この動画の要約テキストを `new_summaries.txt` というファイルに追記する(チャンネル名の見出し付きで)。
 4. 全チャンネルの処理が終わったら、state.json の last_checked_at(現在UTC時刻)を更新する。
-5. dashboard.html を開き、JavaScript内の `const CHANNELS_DATA = {...}` のブロックを、最新のstate.jsonの内容で中身を完全に置き換える(HTML構造やCSSは一切変更しない、このJSONデータ部分のみ更新する)。checkedAtフィールドにはstate.jsonのlast_checked_atを、channels配列の各要素にはname, isNew(=new_in_last_check), videoTitle(=last_video_title), videoUrl(=last_video_url), published(=last_video_published), failed(=check_failed)を対応させる。
+5. dashboard.html を開き、JavaScript内の `const CHANNELS_DATA = {...}` のブロックを、最新のstate.jsonの内容で中身を完全に置き換える(HTML構造やCSSは一切変更しない、このJSONデータ部分のみ更新する)。checkedAtフィールドにはstate.jsonのlast_checked_atを、channels配列の各要素にはname, isNew(=new_in_last_check), videoTitle(=last_video_title), videoUrl(=last_video_url), published(=last_video_published), failed(=check_failed), **summary(=last_summary、無ければnull)**を対応させる。dashboard.htmlのUIには既に「詳細な要約を読む」という展開ボタン(`.summary-toggle`/`.summary-body`)が実装済みなので、summaryフィールドにテキストを入れるだけでよい(HTML/CSS/JSのロジック部分は一切変更しないこと)。
+
+   **重要な注意(過去にバグが発生した箇所)**: summaryフィールドの値には改行を含む長いテキストが入る。CHANNELS_DATAブロックを書き換える際は、必ずPythonで `json.dumps(obj, ensure_ascii=False)` を使って各チャンネルのオブジェクトをJS用の文字列に変換し、それをファイルに書き込むこと。その際、`re.sub(pattern, replacement_string, text)` のように**置換文字列を直接re.subに渡してはいけない**(Pythonの正規表現モジュールは置換文字列中の `\n` を実際の改行バイトに変換してしまうバグを誘発する)。必ず `re.sub(pattern, lambda m: replacement_string, text)` のように**関数(lambda)経由で置換する**か、あるいは単純に文字列の分割・結合(`text.split(marker)` など正規表現を使わない方法)でファイル全体を組み立てること。書き込み後は、`grep -c $'\n'` 等でCHANNELS_DATAブロック内の実改行数が想定より大幅に多くないか(15行前後のはず)を確認し、異常に多い場合は書き直すこと。
 6. `git add state.json dashboard.html` / commit(例: "Update state and dashboard: <日時>")/ `git push origin main` する(新着が1件もなかった場合でもこのコミットは必ず行う)。pushするとGitHub Pages(https://kamechiru.github.io/satomitsuro-video-tracker/dashboard.html)が自動的に更新される。
 7. 新着動画が1件以上あった場合は、`notify_status.txt` というファイルに以下の1行を書き込む(既存の内容は上書きする):
    `NEW:YouTube新着: <チャンネル名をカンマ区切りで列挙> — 要約ができました。`
