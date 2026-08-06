@@ -378,9 +378,16 @@
     const readSet = loadReadSet();
     let unreadCount = 0;
 
-    data.channels.forEach((ch) => {
-      const hasSummary = !!ch.summary;
-      const isUnread = hasSummary && !readSet.has(ch.videoUrl);
+    // 未読(新着)のチャンネルを上に、既読/変化なしを下に並べる。
+    // 同じグループ内では元の(state.json の)並び順を保つ(安定ソート)。
+    const sorted = data.channels
+      .map((ch) => ({
+        ch,
+        isUnread: !!ch.summary && !readSet.has(ch.videoUrl),
+      }))
+      .sort((a, b) => Number(b.isUnread) - Number(a.isUnread));
+
+    sorted.forEach(({ ch, isUnread }) => {
       if (isUnread) unreadCount++;
 
       const li = document.createElement("li");
@@ -407,7 +414,7 @@
 
       li.append(chip, name, video, meta);
 
-      if (hasSummary) {
+      if (ch.summary) {
         const toggle = document.createElement("button");
         toggle.type = "button";
         toggle.className = "summary-toggle";
