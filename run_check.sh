@@ -28,7 +28,6 @@ if [ -f notify_status.txt ]; then
       -title "YouTube新着チェッカー" \
       -message "$MSG" \
       -sound Glass \
-      -open "https://kamechiru.github.io/satomitsuro-video-tracker/dashboard.html" \
       >> "$LOG_FILE" 2>&1
   fi
 fi
