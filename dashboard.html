@@ -336,6 +336,28 @@
     ]
   };
 
+  // 既読管理: サーバー側の new_in_last_check は「前回チェックと比較して動画が
+  // 変わったか」しか表さず、自動チェックが1回でも走るとリセットされてしまう。
+  // 実際にユーザーが読んだかどうかはこのブラウザの localStorage で別管理する。
+  const READ_KEY = "ytChecker.readVideoUrls";
+
+  function loadReadSet() {
+    try {
+      const raw = localStorage.getItem(READ_KEY);
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function markRead(videoUrl) {
+    const set = loadReadSet();
+    set.add(videoUrl);
+    // 肥大化しすぎないよう直近200件に丸める
+    const arr = Array.from(set).slice(-200);
+    localStorage.setItem(READ_KEY, JSON.stringify(arr));
+  }
+
   function relTime(iso) {
     const then = new Date(iso).getTime();
     const now = Date.now();
@@ -353,16 +375,20 @@
   function render(data) {
     const list = document.getElementById("channelList");
     list.innerHTML = "";
-    let newCount = 0;
+    const readSet = loadReadSet();
+    let unreadCount = 0;
 
     data.channels.forEach((ch) => {
-      if (ch.isNew) newCount++;
+      const hasSummary = !!ch.summary;
+      const isUnread = hasSummary && !readSet.has(ch.videoUrl);
+      if (isUnread) unreadCount++;
+
       const li = document.createElement("li");
-      li.className = "channel" + (ch.isNew ? " is-new" : "");
+      li.className = "channel" + (isUnread ? " is-new" : "");
 
       const chip = document.createElement("span");
-      chip.className = "chip" + (ch.isNew ? " is-new" : "");
-      chip.textContent = ch.failed ? "取得失敗" : (ch.isNew ? "新着あり" : "変化なし");
+      chip.className = "chip" + (isUnread ? " is-new" : "");
+      chip.textContent = ch.failed ? "取得失敗" : (isUnread ? "新着あり" : "変化なし");
 
       const name = document.createElement("div");
       name.className = "channel-name";
@@ -381,11 +407,11 @@
 
       li.append(chip, name, video, meta);
 
-      if (ch.summary) {
+      if (hasSummary) {
         const toggle = document.createElement("button");
         toggle.type = "button";
         toggle.className = "summary-toggle";
-        toggle.textContent = "▸ 詳細な要約を読む";
+        toggle.textContent = isUnread ? "▸ 詳細な要約を読む(未読)" : "▸ 詳細な要約を読む";
 
         const body = document.createElement("div");
         body.className = "summary-body";
@@ -394,6 +420,12 @@
         toggle.addEventListener("click", () => {
           const open = body.classList.toggle("open");
           toggle.textContent = open ? "▾ 要約をたたむ" : "▸ 詳細な要約を読む";
+          if (open && isUnread) {
+            markRead(ch.videoUrl);
+            chip.textContent = ch.failed ? "取得失敗" : "変化なし";
+            chip.classList.remove("is-new");
+            li.classList.remove("is-new");
+          }
         });
 
         li.append(toggle, body);
@@ -402,13 +434,13 @@
       list.appendChild(li);
     });
 
-    document.getElementById("sumNew").textContent = newCount;
-    document.getElementById("sumIdle").textContent = data.channels.length - newCount;
+    document.getElementById("sumNew").textContent = unreadCount;
+    document.getElementById("sumIdle").textContent = data.channels.length - unreadCount;
     document.getElementById("sumTotal").textContent = data.channels.length;
 
     const dot = document.getElementById("updatedDot");
     const text = document.getElementById("updatedText");
-    dot.classList.toggle("live", newCount > 0);
+    dot.classList.toggle("live", unreadCount > 0);
     text.textContent = `最終チェック: ${relTime(data.checkedAt)}`;
   }
 
