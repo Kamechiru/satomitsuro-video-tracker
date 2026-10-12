@@ -1,6 +1,6 @@
 # YouTube新着チェック＆要約(毎朝6時のルーティン)
 
-作業フォルダ: `/Users/kameyamakenta/satomitsuro-video-tracker`(コマンドは最初に必ず `cd` してから実行する)。
+作業フォルダ: `/Users/kameyamakenta/satomitsuro-video-tracker`(コマンドは下記の絶対パス形式で実行する)。
 このタスクは無人で実行される。確認を求めて止まらず、最後まで実行すること。
 
 ## 目的
