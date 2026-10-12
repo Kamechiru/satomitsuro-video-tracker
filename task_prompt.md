@@ -12,21 +12,19 @@
 `state.json` と `dashboard.html` は手で編集しない(必ずスクリプト経由)。
 
 ## 手順
-1. `cd /Users/kameyamakenta/satomitsuro-video-tracker && git pull --ff-only origin main && rm -rf work && mkdir -p work/summaries work/transcripts`
-2. `python3 scripts/check_channels.py` — 各チャンネルの最新動画を取得し `work/pending.json` に新着を書く。1〜3分かかる(YouTubeのRSSが不安定なため自動でリトライ/代替取得する)。
-3. `python3 scripts/find_appearances.py` — 他チャンネルへの出演候補を `work/pending.json` に追記する。1〜2分かかる。
-4. `work/pending.json` を読む。`items` が空なら手順6へ進む。
-5. `items` を**1件ずつ順番に**(並列にしない。YouTubeの制限を避けるため)処理する:
-   - 字幕取得: `python3 scripts/fetch_transcript.py <video_id>`(`kind` が `appearance` のときは `--names 人物名,別名` も付ける。人物名・別名は `state.json` の `people` を参照)。
-   - `OK` なら `work/transcripts/<video_id>.txt`(動画説明文＋約60秒ごとに `[mm:ss]` 付きの字幕)を**最初から最後まで通して読む**。
-   - 要約を `work/summaries/<video_id>.txt` に書く(形式は下記)。
+承認が必要なコマンドを減らすため、コマンドは次の3種類だけを使う(いずれも絶対パス。`cd` や `&&` で連結しない)。
+
+1. **準備**: `python3 /Users/kameyamakenta/satomitsuro-video-tracker/scripts/prepare.py`
+   最新化(git pull)・`work/` の初期化・新着チェック・他チャンネルへの出演検索をまとめて行い、`work/pending.json` の内容を表示する。2〜5分かかる(YouTubeのRSSが不安定なため自動でリトライ/代替取得する)。
+2. `pending.json` の `items` が空なら手順4へ進む。空でなければ、`items` を**1件ずつ順番に**(並列にしない。YouTubeの制限を避けるため)処理する:
+   - 字幕取得: `python3 /Users/kameyamakenta/satomitsuro-video-tracker/scripts/fetch_transcript.py <video_id>`(`kind` が `appearance` のときは `--names 人物名,別名` も付ける。人物名・別名は `state.json` の `people` を参照)。
+   - `OK` なら `/Users/kameyamakenta/satomitsuro-video-tracker/work/transcripts/<video_id>.txt`(動画説明文＋約60秒ごとに `[mm:ss]` 付きの字幕)を**最初から最後まで通して読む**。
+   - 要約を Write ツールで `/Users/kameyamakenta/satomitsuro-video-tracker/work/summaries/<video_id>.txt` に書く(形式は下記)。
    - `kind` が `appearance` で、**本人が実際には出演していない**(名前が出るだけ・無関係・他人の切り抜きや転載・本人チャンネルの別名義など)と判断したら、要約は書かず `work/summaries/<video_id>.skip` に理由を1行で書く。字幕中の名前の出現回数が0でも、自動字幕は固有名詞を誤変換するので、それだけで不出演とは判断しない(タイトル・説明文・文脈で判断する)。
    - `TRANSCRIPT_UNAVAILABLE`(字幕なし・取得不可)の場合: `channel` は表示された説明文とタイトルから簡易要約を書き、冒頭に「※字幕が取得できなかったため、タイトルと説明文のみに基づく簡易的な要約です。」と明記する。`appearance` は説明文だけで出演が明確なときに限り同様に簡易要約、不明なら `.skip`。
-6. `python3 scripts/apply_results.py` — 要約を `state.json` に反映する(要約を書かなかった `channel` は次回の実行で再検出される)。
-7. `python3 scripts/build_dashboard.py` — `dashboard.html` を再生成する。
-8. `git add state.json dashboard.html && git commit -m "Update state and dashboard: <UTC日時> (<新着件数> new)" && git push origin main`(新着が0件でも必ずコミット・pushする。GitHub Pages: https://kamechiru.github.io/satomitsuro-video-tracker/dashboard.html が自動で更新される)。
-9. `work/notify.txt` が `NEW:` で始まるなら、デスクトップ通知を出す: `/opt/homebrew/bin/terminal-notifier -title "YouTube新着チェッカー" -message "<NEW: より後ろの文>" -sound Glass`(**`-open` オプションは付けない**。付けると通知が出なくなる)。`NONE` なら通知しない。
-10. 最終回答を出力する(下記)。
+3. すべての `items` を処理したら **仕上げ**: `python3 /Users/kameyamakenta/satomitsuro-video-tracker/scripts/finish.py`
+   要約の反映(`state.json`)・ダッシュボード生成・`git commit`/`push`(新着が0件でも必ずコミット。GitHub Pages: https://kamechiru.github.io/satomitsuro-video-tracker/dashboard.html が自動更新される)・デスクトップ通知(新着があるときだけ。terminal-notifier)までを行う。要約を書かなかった `channel` 項目は次回の実行で再検出される。
+4. 最終回答を出力する(下記)。
 
 ## 要約の形式(`work/summaries/<video_id>.txt`)
 ダッシュボードにそのまま表示するので**プレーンテキスト**(`**`や`#`などのMarkdown記法は使わない)。簡潔にまとめすぎず、詳細に書く。
