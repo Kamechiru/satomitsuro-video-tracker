@@ -1,4 +1,6 @@
 #!/bin/bash
+# 手動実行用(旧launchd用)。毎朝6時の定期実行は Claude の「ルーティン」(スケジュールタスク)が行う。
+# 通知は task_prompt.md の手順9が terminal-notifier で出す。
 set -uo pipefail
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
@@ -10,8 +12,6 @@ cd "$REPO_DIR" || exit 1
 
 echo "=== Run started: $(date -u +%Y-%m-%dT%H:%M:%SZ) ===" >> "$LOG_FILE"
 
-rm -f notify_status.txt new_summaries.txt
-
 claude -p "$(cat task_prompt.md)" \
   --permission-mode bypassPermissions \
   --allowedTools "Bash,Read,Write,Edit,Glob,Grep,Artifact" \
@@ -19,15 +19,3 @@ claude -p "$(cat task_prompt.md)" \
   >> "$LOG_FILE" 2>&1
 
 echo "=== Run finished: $(date -u +%Y-%m-%dT%H:%M:%SZ) ===" >> "$LOG_FILE"
-
-if [ -f notify_status.txt ]; then
-  STATUS=$(cat notify_status.txt)
-  if [[ "$STATUS" == NEW:* ]]; then
-    MSG="${STATUS#NEW:}"
-    /opt/homebrew/bin/terminal-notifier \
-      -title "YouTube新着チェッカー" \
-      -message "$MSG" \
-      -sound Glass \
-      >> "$LOG_FILE" 2>&1
-  fi
-fi
