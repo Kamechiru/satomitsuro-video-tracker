@@ -60,6 +60,30 @@
       "new_in_last_check": false,
       "check_failed": false,
       "last_summary": null
+    },
+    {
+      "name": "苫米地英人の銀河系アカデミア",
+      "channel_id": "UC3bc4PNLgnBudG19N74Jjzw",
+      "handle": "@DR.苫米地英人",
+      "last_video_id": "",
+      "last_video_title": "(初回チェック前)",
+      "last_video_url": "https://www.youtube.com/@DR.苫米地英人",
+      "last_video_published": "2026-10-12T00:00:00Z",
+      "new_in_last_check": false,
+      "check_failed": false,
+      "last_summary": null
+    },
+    {
+      "name": "苫米地英人YouTube公式チャンネル（2024年4月から更新停止中）",
+      "channel_id": "UCF5_b1FCKAX_GvRu7ePMG3w",
+      "handle": null,
+      "last_video_id": "Z0S3ytieByk",
+      "last_video_title": "苫米地メソッド「スコトーマの原理」苫米地英人（リニューアル版）",
+      "last_video_url": "https://www.youtube.com/watch?v=Z0S3ytieByk",
+      "last_video_published": "2024-04-18T09:00:07+00:00",
+      "new_in_last_check": false,
+      "check_failed": false,
+      "last_summary": null
     }
   ],
   "last_checked_at": "2026-10-12T00:12:16Z",
@@ -183,6 +207,25 @@
       ],
       "own_name_contains": [
         "南山紘輝"
+      ]
+    },
+    {
+      "name": "苫米地英人",
+      "aliases": [
+        "苫米地英人",
+        "苫米地博士"
+      ],
+      "own_channel_ids": [
+        "UCF5_b1FCKAX_GvRu7ePMG3w",
+        "UC3bc4PNLgnBudG19N74Jjzw",
+        "UC1gHtxTKm_6ZE2_n__vRlwA"
+      ],
+      "own_name_contains": [
+        "苫米地英人",
+        "苫米地博士",
+        "Dr.苫米地",
+        "Dr. 苫米地",
+        "Functional Sound"
       ]
     }
   ],

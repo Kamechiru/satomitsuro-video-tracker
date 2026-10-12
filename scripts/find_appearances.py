@@ -16,7 +16,7 @@ from common import (WORK, curl, duration_seconds, ensure_work, load_state,
 
 WINDOW_DAYS = 14        # これより古い動画は対象外
 MAX_PER_PERSON = 4      # 1回の実行で人物ごとに拾う上限
-MAX_TOTAL = 10          # 1回の実行で拾う総数の上限
+MAX_TOTAL = 12          # 1回の実行で拾う総数の上限
 MIN_SECONDS = 180       # 3分未満(ショート等)は対象外
 MODIFIERS = ["対談", "ゲスト", "出演", "コラボ", "インタビュー"]
 CLIP_RE = re.compile(r"切り抜き|切抜|クリップ|まとめ|shorts|ショート", re.I)
